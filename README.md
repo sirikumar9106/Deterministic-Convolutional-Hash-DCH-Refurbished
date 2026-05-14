@@ -16,9 +16,9 @@ Traditional AI pipelines process every image in a dataset from scratch. DCH acts
 
 | Method | Rotation | Flip | Crop | Color Aware | False Positive Rate |
 |--------|----------|------|------|-------------|-------------------|
-| aHash  | ❌ | ❌ | Partial | ❌ | High |
+| aHash  | ✅ | ❌ | Partial | ❌ | High |
 | pHash  | ❌ | ❌ | Partial | ❌ | High |
-| dHash  | ❌ | ❌ | Partial | ❌ | High |
+| dHash  | ❌ | ✅ | Partial | ❌ | High |
 | wHash  | ❌ | ❌ | Partial | ❌ | High |
 | Crypto Hash | ❌ | ❌ | ❌ | ❌ | N/A — exact only |
 | **DCH2** | ✅ | ✅ | ✅ | ✅ | ~6% on 20k dataset |
