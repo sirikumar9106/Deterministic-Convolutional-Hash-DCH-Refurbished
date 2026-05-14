@@ -1,14 +1,14 @@
-# DCH2 — Deterministic Convolutional Hashing v2
+# DCH2 - Deterministic Convolutional Hashing v2
 
-A zero-model perceptual image hashing system that detects duplicates, crops, rotations, and mirrors without AI — cutting dataset size before model inference to reduce compute cost and carbon footprint. 4% more accurate than traditional methods, proving classical algorithms still solve problems where even modern AI struggles.
+A zero-model perceptual image hashing system that detects duplicates, crops, rotations, and mirrors without AI, cutting dataset size before model inference to reduce compute cost and carbon footprint. 7% more accurate than traditional methods in the pre existing fields while also accounting for spatial transformations, proving classical algorithms still solve problems where even modern AI struggles.
 
 ---
 
 ## Why DCH Exists
 
-Traditional AI pipelines process every image in a dataset from scratch. DCH acts as a **pre-filter** — it sorts a large dataset into confident matches and confident non-matches first, so the AI model only processes the ambiguous remainder. Less compute, less energy, same accuracy.
+Traditional AI pipelines process every image in a dataset from scratch. DCH acts as a **pre-filter** - it sorts a large dataset into confident matches and confident non-matches first, so the AI model only processes the ambiguous remainder. Less compute, less energy, same accuracy.
 
-**Zero-model constraint:** No weights, no training data, no GPU required. Fully deterministic — same input always produces same output on any hardware.
+**Zero-model constraint:** No weights, no training data, no GPU required. Fully deterministic - same input always produces same output on any hardware.
 
 ---
 
@@ -23,7 +23,7 @@ Traditional AI pipelines process every image in a dataset from scratch. DCH acts
 | Crypto Hash | ❌ | ❌ | ❌ | ❌ | N/A — exact only |
 | **DCH2** | ✅ | ✅ | ✅ | ✅ | ~6% on 20k dataset |
 
-Traditional methods hash raw pixels or DCT frequencies scaled to 8×8. A flipped image produces completely different frequency patterns at that scale. DCH2 extracts **structural feature maps first** (like CNN conv layers) then hashes those — the same edges exist in a flipped image, just repositioned, so the hash survives the transform.
+Traditional methods hash raw pixels or DCT frequencies scaled to 8×8. A flipped image produces completely different frequency patterns at that scale. DCH2 extracts **structural feature maps first** (like CNN conv layers) then hashes those - the same edges exist in a flipped image, just repositioned, so the hash survives the transform.
 
 ---
 
@@ -83,13 +83,13 @@ Structural Stats (similarity/stats.py)
 
 ### Four-Layer Decision System (core/comparator.py)
 
-**Layer 1 — Hash Similarity**
+**Layer 1 : Hash Similarity**
 ```
 sim_spatial   = 1 - hamming(bits_a[0:128],   bits_b[0:128])   / 128
 sim_invariant = 1 - hamming(bits_a[128:256],  bits_b[128:256]) / 128
 ```
 
-**Layer 2 — Coherence Adjustment**
+**Layer 2 : Coherence Adjustment**
 ```
 Fires when: 0.60 ≤ sim_path ≤ 0.70 AND opposing_path < 0.55
 Effect:     sim_path = sim_path * (0.7 + 0.3 * coherence_score)
@@ -98,10 +98,10 @@ Purpose:    Pushes false positives in ambiguous zone downward
 
 Coherence score measures whether matching bits form consecutive runs (true match) or are scattered randomly (false positive). Three components:
 - Longest run score (weight 0.35)
-- Cluster ratio — fraction of matching bits in runs ≥ 3 (weight 0.40)
-- Fragmentation penalty — average run length / 8 (weight 0.25)
+- Cluster ratio : fraction of matching bits in runs ≥ 3 (weight 0.40)
+- Fragmentation penalty : average run length / 8 (weight 0.25)
 
-**Layer 3 — Statistical Rescue**
+**Layer 3 : Statistical Rescue**
 ```
 Fires when: final < threshold AND sim_stats ≥ 0.82
 Effect:     final = 0.70 * final + 0.30 * sim_stats
@@ -139,7 +139,7 @@ SELECT if final ≥ 0.60 else REJECT
 
 ```
 dcHash_Refurbished/
-├── dch2/                    ← package — copy this into your project
+├── dch2/                    ← package - copy this into your project
 │   ├── __init__.py          ← public API: generate_dch, compare, compare_batch
 │   ├── core/
 │   │   ├── preprocess.py    ← image loading and L+H channel
@@ -187,10 +187,10 @@ python test.py
 Each image in `test/` is compared against every image in `data/`. Output shows all six signals per comparison plus final verdict.
 
 **Output legend:**
-- `[SELECT]` — perceptually similar, accepted as match
-- `[REJECT]` — perceptually different, not a match
-- `★` — stats rescue activated (compounded transform case)
-- `◆` — divergence rescue activated (borderline true match)
+- `[SELECT]` : perceptually similar, accepted as match
+- `[REJECT]` : perceptually different, not a match
+- `★` : stats rescue activated (compounded transform case)
+- `◆` : divergence rescue activated (borderline true match)
 
 ---
 
@@ -226,10 +226,10 @@ for r in results:
 ### Adjusting the threshold
 
 ```python
-# More strict — fewer false positives, more false negatives
+# More strict - fewer false positives, more false negatives
 result = dch2.compare("a.png", "b.png", threshold=0.70)
 
-# More lenient — fewer false negatives, more false positives
+# More lenient - fewer false negatives, more false positives
 result = dch2.compare("a.png", "b.png", threshold=0.55)
 ```
 
