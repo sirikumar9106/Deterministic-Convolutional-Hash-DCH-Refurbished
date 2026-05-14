@@ -1,0 +1,29 @@
+# Virtual environment
+dchenv/
+venv/
+env/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Test data — not committed
+data/
+test/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Logs and reports
+*.log
+.pytest_cache/
+report.json

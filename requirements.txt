@@ -1,0 +1,21 @@
+# Core
+numpy
+scipy
+ 
+# Image processing
+opencv-python
+Pillow
+ 
+# Wavelet transforms
+PyWavelets
+dtcwt
+ 
+# Web interface
+Flask
+ 
+# Visualization
+matplotlib
+ 
+# Testing — required for phase-by-phase validation
+pytest
+pytest-json-report
